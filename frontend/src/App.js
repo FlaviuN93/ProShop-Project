@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap';
 import Header from './components/Header';
@@ -12,6 +12,8 @@ import RegisterScreen from './pages/RegisterScreen';
 import ProfileScreen from './pages/ProfileScreen';
 import ShippingScreen from './pages/ShippingScreen';
 import PaymentScreen from './pages/PaymentScreen';
+import PlaceOrderScreen from './pages/PlaceOrderScreen';
+import OrderScreen from './pages/OrderScreen';
 
 const App = () => {
 	return (
@@ -19,9 +21,11 @@ const App = () => {
 			<Header />
 			<main className='py-3'>
 				<Container>
+					<Route path='/order/:id' component={OrderScreen} />
 					<Route path='/login' component={LoginScreen} />
 					<Route path='/shipping' component={ShippingScreen} />
 					<Route path='/payment' component={PaymentScreen} />
+					<Route path='/placeorder' component={PlaceOrderScreen} />
 					<Route path='/register' component={RegisterScreen} />
 					<Route path='/profile' component={ProfileScreen} />
 					<Route path='/product/:id' component={ProductScreen} />
