@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { getOrderDetails, payOrder } from '../reducers/orders/order.action';
 import { ORDER_PAY_RESET } from '../reducers/orders/order.types';
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
 	const orderId = match.params.id;
 	const [sdkReady, setSdkReady] = useState(false);
 	const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const OrderScreen = ({ match }) => {
 			const { data: clientId } = await axios.get('/api/config/paypal');
 			const script = document.createElement('script');
 			script.type = 'text/javascript';
-			script.source = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+			script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
 			script.async = true;
 			script.onload = () => {
 				setSdkReady(true);
@@ -46,7 +46,6 @@ const OrderScreen = ({ match }) => {
 	}, [dispatch, orderId, successPay, order]);
 
 	const successPaymentHandler = (paymentResult) => {
-		console.log(paymentResult);
 		dispatch(payOrder(orderId, paymentResult));
 	};
 
