@@ -143,6 +143,7 @@ const ProductEditScreen = ({ match, history }) => {
 										image: e.target.value,
 									})
 								}></Form.Control>
+							<br />
 							<Form.File
 								id='image-file'
 								label='Choose File'
