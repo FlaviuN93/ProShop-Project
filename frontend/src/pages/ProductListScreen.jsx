@@ -10,7 +10,6 @@ import {
 	createProduct,
 } from '../reducers/products/products.action';
 import { PRODUCT_CREATE_RESET } from '../reducers/products/products.types';
-import Paginate from '../components/Paginate';
 
 const ProductListScreen = ({ history }) => {
 	const dispatch = useDispatch();
