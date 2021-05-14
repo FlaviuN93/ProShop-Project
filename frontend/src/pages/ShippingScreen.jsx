@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveShippingAddress } from '../reducers/cart/cart.action';
+import { shippingAddressFromCart } from '../reducers/cart/cart.selector';
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingScreen = ({ history }) => {
-	const cart = useSelector((state) => state.cart);
-	const { shippingAddress } = cart;
+	const shippingAddress = useSelector(shippingAddressFromCart);
+	const dispatch = useDispatch();
+
 	const [shippingInfo, setShippingInfo] = useState({
 		address: shippingAddress.address,
 		city: shippingAddress.city,
@@ -16,7 +18,6 @@ const ShippingScreen = ({ history }) => {
 		country: shippingAddress.country,
 	});
 	const { address, city, postalCode, country } = shippingInfo;
-	const dispatch = useDispatch();
 	const submitHandler = (e) => {
 		e.preventDefault();
 		dispatch(saveShippingAddress({ address, city, postalCode, country }));

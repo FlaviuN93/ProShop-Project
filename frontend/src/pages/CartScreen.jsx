@@ -12,15 +12,13 @@ import {
 } from 'react-bootstrap';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../reducers/cart/cart.action';
+import { cartItemsFromCart } from '../reducers/cart/cart.selector';
 
 const CartScreen = ({ match, location, history }) => {
+	const dispatch = useDispatch();
+	const cartItems = useSelector(cartItemsFromCart);
 	const productId = match.params.id;
 	const qty = location.search ? Number(location.search.split('=')[1]) : 1;
-	const dispatch = useDispatch();
-
-	const cart = useSelector((state) => state.cart);
-	const { cartItems } = cart;
-
 	useEffect(() => {
 		if (productId) {
 			dispatch(addToCart(productId, qty));

@@ -22,7 +22,19 @@ import {
 	ORDER_DELIVER_RESET,
 } from './order.types';
 
-export const orderCreateReducer = (state = {}, action) => {
+const INITIAL_STATE = {
+	loading: false,
+	success: true,
+	order: {
+		shippingAddress: {},
+		orderItems: [],
+		user: {},
+	},
+	orders: [],
+	error: undefined,
+};
+
+export const orderCreateReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case ORDER_CREATE_REQUEST:
 			return {
@@ -47,10 +59,7 @@ export const orderCreateReducer = (state = {}, action) => {
 	}
 };
 
-export const orderDetailsReducer = (
-	state = { loading: true, orderItems: [], shippingAddress: {} },
-	action
-) => {
+export const orderDetailsReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case ORDER_DETAILS_REQUEST:
 			return {
@@ -59,7 +68,6 @@ export const orderDetailsReducer = (
 			};
 		case ORDER_DETAILS_SUCCESS:
 			return {
-				...state,
 				loading: false,
 				success: true,
 				order: action.payload,
@@ -75,7 +83,7 @@ export const orderDetailsReducer = (
 	}
 };
 
-export const orderPayReducer = (state = {}, action) => {
+export const orderPayReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case ORDER_PAY_REQUEST:
 			return {
@@ -98,7 +106,7 @@ export const orderPayReducer = (state = {}, action) => {
 	}
 };
 
-export const orderDeliverReducer = (state = {}, action) => {
+export const orderDeliverReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case ORDER_DELIVER_REQUEST:
 			return {
@@ -121,7 +129,7 @@ export const orderDeliverReducer = (state = {}, action) => {
 	}
 };
 
-export const orderListMyReducer = (state = { orders: [] }, action) => {
+export const orderListMyReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case ORDER_LIST_MY_REQUEST:
 			return {
@@ -147,7 +155,7 @@ export const orderListMyReducer = (state = { orders: [] }, action) => {
 	}
 };
 
-export const orderListReducer = (state = { orders: [] }, action) => {
+export const orderListReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case ORDER_LIST_REQUEST:
 			return {

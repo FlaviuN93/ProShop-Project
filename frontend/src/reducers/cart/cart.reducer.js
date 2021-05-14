@@ -9,6 +9,7 @@ import { addItemToCart } from './cart.utils';
 const INITIAL_STATE = {
 	cartItems: [],
 	shippingAddress: {},
+	paymentMethod: '',
 };
 
 export const cartReducer = (state = INITIAL_STATE, action) => {

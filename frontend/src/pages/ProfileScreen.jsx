@@ -10,6 +10,12 @@ import {
 	getUserDetails,
 	updateUserProfile,
 } from '../reducers/users/user.action';
+import { selectOrderListMy } from '../reducers/orders/order.selector';
+import {
+	selectUserDetails,
+	selectUserLogin,
+	selectUserUpdateProfile,
+} from '../reducers/users/user.selector';
 
 const ProfileScreen = ({ history }) => {
 	const [name, setName] = useState('');
@@ -20,17 +26,15 @@ const ProfileScreen = ({ history }) => {
 
 	const dispatch = useDispatch();
 
-	const userDetails = useSelector((state) => state.userDetails);
-	const { loading, error, user } = userDetails;
+	const { loading, error, user } = useSelector(selectUserDetails);
+	const { userInfo } = useSelector(selectUserLogin);
+	const { success } = useSelector(selectUserUpdateProfile);
 
-	const userLogin = useSelector((state) => state.userLogin);
-	const { userInfo } = userLogin;
-
-	const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-	const { success } = userUpdateProfile;
-
-	const orderListMy = useSelector((state) => state.orderListMy);
-	const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+	const {
+		loading: loadingOrders,
+		error: errorOrders,
+		orders,
+	} = useSelector(selectOrderListMy);
 
 	useEffect(() => {
 		if (!userInfo) {

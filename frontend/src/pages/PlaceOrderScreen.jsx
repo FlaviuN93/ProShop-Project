@@ -6,12 +6,13 @@ import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Link } from 'react-router-dom';
 import { createOrder } from '../reducers/orders/order.action';
+import { selectOrderCreate } from '../reducers/orders/order.selector';
+import { selectCart } from '../reducers/cart/cart.selector';
 
 const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
-	const cart = useSelector((state) => state.cart);
-	const orderCreate = useSelector((state) => state.orderCreate);
-	const { order, success, error } = orderCreate;
+	const cart = useSelector(selectCart);
+	const { order, success, error } = useSelector(selectOrderCreate);
 
 	useEffect(() => {
 		if (success) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
@@ -6,6 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { Link } from 'react-router-dom';
+import {
+	selectOrderDeliver,
+	selectOrderDetails,
+	selectOrderPay,
+} from '../reducers/orders/order.selector';
 import {
 	getOrderDetails,
 	payOrder,
@@ -15,42 +20,37 @@ import {
 	ORDER_PAY_RESET,
 	ORDER_DELIVER_RESET,
 } from '../reducers/orders/order.types';
+import { selectUserLogin } from '../reducers/users/user.selector';
 
 const OrderScreen = ({ match, history }) => {
 	const orderId = match.params.id;
 	const [sdkReady, setSdkReady] = useState(false);
 	const dispatch = useDispatch();
 
-	const userLogin = useSelector((state) => state.userLogin);
-	const { userInfo } = userLogin;
+	const { userInfo } = useSelector(selectUserLogin);
+	const { order, loading, error } = useSelector(selectOrderDetails);
+	const { loading: loadingPay, success: successPay } =
+		useSelector(selectOrderPay);
+	const { loading: loadingDeliver, success: successDeliver } =
+		useSelector(selectOrderDeliver);
 
-	const orderDetails = useSelector((state) => state.orderDetails);
-	const { order, loading, error } = orderDetails;
+	const addPayPalScript = useCallback(async () => {
+		const { data: clientId } = await axios.get('/api/config/paypal');
 
-	const orderPay = useSelector((state) => state.orderPay);
-	const { loading: loadingPay, success: successPay } = orderPay;
-
-	const orderDeliver = useSelector((state) => state.orderDeliver);
-	const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+		const script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+		script.async = true;
+		script.onload = () => {
+			setSdkReady(true);
+		};
+		document.body.appendChild(script);
+	}, []);
 
 	useEffect(() => {
 		if (!userInfo) {
 			history.push('/login');
 		}
-
-		const addPayPalScript = async () => {
-			const { data: clientId } = await axios.get('/api/config/paypal');
-
-			const script = document.createElement('script');
-			script.type = 'text/javascript';
-			script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-			script.async = true;
-			script.onload = () => {
-				setSdkReady(true);
-			};
-			document.body.appendChild(script);
-		};
-
 		if (!order || successPay || successDeliver) {
 			dispatch({ type: ORDER_PAY_RESET });
 			dispatch({ type: ORDER_DELIVER_RESET });
@@ -62,8 +62,17 @@ const OrderScreen = ({ match, history }) => {
 				setSdkReady(true);
 			}
 		}
-	}, [dispatch, orderId, successPay, order, history, userInfo, successDeliver]);
-	// console.log(order);
+	}, [
+		dispatch,
+		orderId,
+		successPay,
+		order,
+		history,
+		userInfo,
+		successDeliver,
+		addPayPalScript,
+	]);
+
 	const successPaymentHandler = (paymentResult) => {
 		dispatch(payOrder(orderId, paymentResult));
 	};

@@ -6,6 +6,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { register } from '../reducers/users/user.action';
 import FormContainer from '../components/FormContainer';
+import { selectUserRegister } from '../reducers/users/user.selector';
 
 const RegisterScreen = ({ location, history }) => {
 	const [userCredentials, setUserCredentials] = useState({
@@ -18,10 +19,10 @@ const RegisterScreen = ({ location, history }) => {
 
 	const { name, email, password, confirmPassword } = userCredentials;
 	const dispatch = useDispatch();
-	const userRegister = useSelector((state) => state.userRegister);
-	const { loading, error, userInfo } = userRegister;
+	const { loading, error, userInfo } = useSelector(selectUserRegister);
+
 	const redirect = location.search ? location.search.split('=')[1] : '/';
-	console.log(userInfo);
+
 	useEffect(() => {
 		if (userInfo) {
 			history.push(redirect);

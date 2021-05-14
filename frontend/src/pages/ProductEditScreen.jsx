@@ -11,6 +11,10 @@ import {
 } from '../reducers/products/products.action';
 import FormContainer from '../components/FormContainer';
 import { PRODUCT_UPDATE_RESET } from '../reducers/products/products.types';
+import {
+	selectProductDetail,
+	selectProductUpdate,
+} from '../reducers/products/products.selector';
 
 const ProductEditScreen = ({ match, history }) => {
 	const productId = match.params.id;
@@ -28,10 +32,12 @@ const ProductEditScreen = ({ match, history }) => {
 	const [uploading, setUploading] = useState(false);
 
 	const dispatch = useDispatch();
-	const productDetail = useSelector((state) => state.productDetail);
-	const { loading, error, product } = productDetail;
-	const productUpdate = useSelector((state) => state.productUpdate);
-	const { loading: loadingUpdate, error: errorUpdate, success } = productUpdate;
+	const { loading, error, product } = useSelector(selectProductDetail);
+	const {
+		loading: loadingUpdate,
+		error: errorUpdate,
+		success,
+	} = useSelector(selectProductUpdate);
 
 	useEffect(() => {
 		if (success) {

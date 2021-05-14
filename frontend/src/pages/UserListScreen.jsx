@@ -5,16 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listUsers, deleteUser } from '../reducers/users/user.action';
+import {
+	selectUserDelete,
+	selectUserList,
+	selectUserLogin,
+} from '../reducers/users/user.selector';
 
 const UserListScreen = ({ history }) => {
 	const dispatch = useDispatch();
-	const userList = useSelector((state) => state.userList);
-	const { loading, error, users } = userList;
-	const userLogin = useSelector((state) => state.userLogin);
-	const { userInfo } = userLogin;
-	const userDelete = useSelector((state) => state.userDelete);
-	const { success } = userDelete;
-	console.log(users);
+	const { loading, error, users } = useSelector(selectUserList);
+	const { userInfo } = useSelector(selectUserLogin);
+	const { success } = useSelector(selectUserDelete);
+
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
 			dispatch(listUsers());

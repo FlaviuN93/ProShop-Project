@@ -19,6 +19,11 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../reducers/products/products.types
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
+import {
+	selectProductDetail,
+	selectProductReview,
+} from '../reducers/products/products.selector';
+import { selectUserLogin } from '../reducers/users/user.selector';
 
 const ProductScreen = ({ history, match }) => {
 	const [qty, setQty] = useState(1);
@@ -26,14 +31,10 @@ const ProductScreen = ({ history, match }) => {
 	const [comment, setComment] = useState('');
 
 	const dispatch = useDispatch();
-	const productDetails = useSelector((state) => state.productDetail);
-	const { loading, error, product } = productDetails;
-
-	const userLogin = useSelector((state) => state.userLogin);
-	const { userInfo } = userLogin;
-
-	const productReview = useSelector((state) => state.productReview);
-	const { error: errorReview, success: successReview } = productReview;
+	const { loading, error, product } = useSelector(selectProductDetail);
+	const { userInfo } = useSelector(selectUserLogin);
+	const { error: errorReview, success: successReview } =
+		useSelector(selectProductReview);
 
 	useEffect(() => {
 		if (successReview) {

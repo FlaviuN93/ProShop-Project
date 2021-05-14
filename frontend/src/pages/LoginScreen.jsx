@@ -6,14 +6,14 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { login } from '../reducers/users/user.action';
 import FormContainer from '../components/FormContainer';
+import { selectUserLogin } from '../reducers/users/user.selector';
 
 const LoginScreen = ({ location, history }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch();
-	const userLogin = useSelector((state) => state.userLogin);
+	const { loading, error, userInfo } = useSelector(selectUserLogin);
 
-	const { loading, error, userInfo } = userLogin;
 	const redirect = location.search ? location.search.split('=')[1] : '/';
 
 	useEffect(() => {
