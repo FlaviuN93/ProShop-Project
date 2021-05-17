@@ -13,7 +13,7 @@ const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
 	const cart = useSelector(selectCart);
 	const { order, success, error } = useSelector(selectOrderCreate);
-
+	console.log(order);
 	useEffect(() => {
 		if (success) {
 			history.push(`/order/${order._id}`);

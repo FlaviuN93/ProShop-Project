@@ -113,7 +113,7 @@ export const productCreateReducer = (state = {}, action) => {
 	}
 };
 
-export const productUpdateReducer = (state = { product: {} }, action) => {
+export const productUpdateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case PRODUCT_UPDATE_REQUEST:
 			return {
@@ -128,7 +128,7 @@ export const productUpdateReducer = (state = { product: {} }, action) => {
 		case PRODUCT_UPDATE_FAIL:
 			return { error: action.payload, loading: false };
 		case PRODUCT_UPDATE_RESET:
-			return { product: {} };
+			return {};
 		default:
 			return state;
 	}
